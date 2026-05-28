@@ -1,15 +1,17 @@
 
-require ('dotenv')-config();
+require ('dotenv').config();
 const app = require('./src/app');
-const sequelize = require('./src/config/database');
+const sequelize = require('./src/config/db');
+require('./src/models/Usuario');
+
 const PORT = process.env.PORT || 3000;
 
     
-    sequelize.authenticate()
+    sequelize.sync()
     .then(()=>{
         console.log('PostgresSQL conectado');
         app.listen(PORT,()=>{
-            console.log('Servidor corriendo en puerta ${PORT}');
+            console.log(`Servidor corriendo en puerto ${PORT}`);
         });
     })
     .catch(error => {
