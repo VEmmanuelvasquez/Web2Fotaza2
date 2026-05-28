@@ -9,8 +9,12 @@ link(
 )
 
 body 
-h1 fotaza2 funcionando
-a(href='/auth/login') Login
+h1 fotaza2 
 
-br
-a(href='/auth/register') Registro
+if usuario 
+  h2 Bienvenido  #{usuario.nommbre}
+  a(href='/auth/logout')
+else
+  a(href='/auth/login') Login
+  br
+  a(href='/auth/register') Registro

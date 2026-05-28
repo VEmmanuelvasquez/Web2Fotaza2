@@ -6,3 +6,24 @@ title login
 body 
 
 h1 login
+
+form (action='/auth/login' method='POST')
+
+input(
+    type='email'
+    name='email'
+    placeholder='Email'
+)
+
+br
+
+input(
+    typr='password'
+    name='password'
+    placeholder='Contraseña'
+
+)
+
+br
+
+button(type='submit') Ingresat
