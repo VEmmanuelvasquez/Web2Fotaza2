@@ -1,29 +1,26 @@
-html 
-head 
+doctype html
+html
+  head
+    title Login
 
-title login
+  body
+    h1 Login
 
-body 
+    form(action='/auth/login' method='POST')
+      input(
+        type='email'
+        name='email'
+        placeholder='Email'
+      )
 
-h1 login
+      br
 
-form (action='/auth/login' method='POST')
+      input(
+        type='password'
+        name='password'
+        placeholder='Contraseña'
+      )
 
-input(
-    type='email'
-    name='email'
-    placeholder='Email'
-)
+      br
 
-br
-
-input(
-    typr='password'
-    name='password'
-    placeholder='Contraseña'
-
-)
-
-br
-
-button(type='submit') Ingresat
+      button(type='submit') Ingresar

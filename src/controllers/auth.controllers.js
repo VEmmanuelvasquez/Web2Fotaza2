@@ -47,7 +47,7 @@ exports.showLogin = (req,res) => {
 };
 exports.login =async (req,res) => {
     try{
-        const{email,password} = body;
+        const{email,password} =req.body;
         const usuario = await Usuario.findOne ({   
             where: {email}
         });

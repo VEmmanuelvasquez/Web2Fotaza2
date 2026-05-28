@@ -19,7 +19,8 @@ app.use(session({
             database:process.env.DB_NAME,
             password:process.env.DB_PASSWORD,
             port:process.env.DB_PORT
-        }
+        },
+        createTableIfMissing:true
     }),
     secret: process.env.SESSION_SECRET,
     resave: false,
