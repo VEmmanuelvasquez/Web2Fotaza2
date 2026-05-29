@@ -1,0 +1,21 @@
+doctype html
+html
+  head
+    title Feed
+
+  body
+    h1 Feed
+
+    if usuario
+      a(href='/feed/crear') Crear publicacion
+      br
+      a(href='/auth/logout') Logout
+
+    each publicacion in publicaciones
+      hr
+      h2= publicacion.titulo
+      p= publicacion.descripcion
+      img(
+        src='/uploads/' + publicacion.imagen
+        width='300'
+      )

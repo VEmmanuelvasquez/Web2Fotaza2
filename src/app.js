@@ -11,16 +11,17 @@ app.set('views', path.join(__dirname,'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
+
 app.use(session({
     store: new pgSession({
-        conObject:{
-            user:process.env.DB_USER,
-            host:process.env.DB_HOST,
-            database:process.env.DB_NAME,
-            password:process.env.DB_PASSWORD,
-            port:process.env.DB_PORT
+        conObject: {
+            user: process.env.DB_USER,
+            host: process.env.DB_HOST,
+            database: process.env.DB_NAME,
+            password: process.env.DB_PASSWORD,
+            port: process.env.DB_PORT
         },
-        createTableIfMissing:true
+        createTableIfMissing: true
     }),
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -28,10 +29,12 @@ app.use(session({
     cookie: {
         maxAge: 1000 * 60 * 60 * 24
     }
+
 }));
 
 
 app.use('/',require('./routes/home.routes'));
 app.use('/auth',require('./routes/auth.routes'));
+app.use('/feed', require('./routes/publicacion.routes'));
 
 module.exports = app;

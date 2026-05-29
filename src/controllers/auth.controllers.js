@@ -73,7 +73,9 @@ exports.login =async (req,res) => {
             rol: usuario.rol
         };
 
-        res.redirect('/');
+        req.session.save(() => {
+            res.redirect('/feed');
+        });
 
     } catch (error) {
       console.log(error);
