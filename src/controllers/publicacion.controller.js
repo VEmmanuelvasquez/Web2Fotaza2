@@ -59,5 +59,37 @@ exports.crear = async (req, res) => {
         res.send('Error al publicar');
 
     }
-
 };
+
+    exports.eliminar = async (req, res) => {
+
+        
+        try{
+            const publicacion = await Publicacion.findByPk(
+                req.params.id
+            );
+            console.log('usuarioId publicación:', publicacion.usuarioId);
+            console.log('usuario sesión:', req.session.usuario.id);
+
+            if (!publicacion) {
+                return res.send('Publicacion no encontrada ');
+            }
+
+            if(
+                publicacion.usuarioId !==
+                req.session.usuario.id
+            ){
+                return res.send(' no autorizado');
+            }
+
+            await publicacion.destroy();
+
+            res.redirect('/feed');
+        } catch (error) {
+            console.log(error);
+            res.send('Error al eliminar');
+        }
+
+
+    };
+

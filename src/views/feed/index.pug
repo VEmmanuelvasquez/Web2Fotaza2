@@ -13,18 +13,27 @@ html
 
     each publicacion in publicaciones
       hr
+
       h2= publicacion.titulo
 
-      p 
-      b Publicado por: 
-      | #{publicacion.Usuario.nombre}
+      p
+        b Publicado por:
+        | #{publicacion.Usuario.nombre}
 
-      p 
-      b Fecha: 
-      | #{new Date(publicacion.createdAt).toLocaleString('es-AR')}
+      p
+        b Fecha:
+        | #{new Date(publicacion.createdAt).toLocaleString('es-AR')}
 
       p= publicacion.descripcion
+
       img(
         src='/uploads/' + publicacion.imagen
         width='300'
       )
+
+      if usuario && usuario.id === publicacion.usuarioId
+        form(
+          action='/feed/eliminar/' + publicacion.id
+          method='POST'
+        )
+          button(type='submit') Eliminar

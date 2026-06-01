@@ -20,5 +20,10 @@ router.post('/crear',
     upload.single('imagen'),
     publicacionController.crear
 );
+router.post(
+    '/eliminar/:id',
+    authMiddleware.isAuth,
+    publicacionController.eliminar
+);
 
 module.exports = router;
