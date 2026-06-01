@@ -1,8 +1,13 @@
 const Publicacion = require('../models/Publicacion');
+const Usuario = require('../models/Usuario');
+
+
 
 exports.feed = async (req, res) => {
 
     const publicaciones = await Publicacion.findAll({
+
+        include: [Usuario],
 
         order: [['id', 'DESC']]
 
