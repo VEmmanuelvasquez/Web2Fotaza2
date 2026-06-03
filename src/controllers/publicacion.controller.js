@@ -1,18 +1,30 @@
 const Publicacion = require('../models/Publicacion');
 const Usuario = require('../models/Usuario');
-
-
+const {Op} = require('sequelize');
+const  Comentario = require('../models/Comentario');
 
 exports.feed = async (req, res) => {
-
+    const busqueda = req.query.q || '';
     const publicaciones = await Publicacion.findAll({
 
-        include: [Usuario],
+        include: [
+            Usuario,
+            {
+                model: Comentario,
+                include:[Usuario]
+            }
+        ],
+
+        where: {
+    titulo: {
+        [Op.iLike]: `%${busqueda}%`
+    }
+},
 
         order: [['id', 'DESC']]
 
     });
-
+    
     res.render('feed/index', {
 
         publicaciones,

@@ -3,7 +3,7 @@ const path = require('path');
 const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
 const app = express();
-
+const comentarioRoutes = require('./routes/comentario.routes');
 
 app.set('view engine','pug');
 
@@ -36,5 +36,5 @@ app.use(session({
 app.use('/',require('./routes/home.routes'));
 app.use('/auth',require('./routes/auth.routes'));
 app.use('/feed', require('./routes/publicacion.routes'));
-
+app.use('/comentarios', comentarioRoutes);
 module.exports = app;

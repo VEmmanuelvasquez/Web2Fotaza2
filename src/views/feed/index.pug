@@ -6,6 +6,15 @@ html
   body
     h1 Feed
 
+    form(action='/feed' method='GET')
+      input(
+      type='text'
+      name='q'
+      placeholder='Buscar publicaciones'
+      value=busqueda
+    ) 
+
+      button(type='submit') Buscar
     if usuario
       a(href='/feed/crear') Crear publicacion
       br
@@ -30,6 +39,7 @@ html
         src='/uploads/' + publicacion.imagen
         width='300'
       )
+      
 
       if usuario && usuario.id === publicacion.usuarioId
         form(
@@ -37,3 +47,28 @@ html
           method='POST'
         )
           button(type='submit') Eliminar
+
+      if usuario 
+        form(
+          action='/comentarios/crear/' + publicacion.id 
+          method='POST'
+        )
+
+          input(
+            type="text"
+            name='texto'
+            placeholder='EScribe un comentario'
+            required
+              )
+          button(type='submit') Comentar
+
+      if publicacion.comentarios && publicacion.comentarios.length > 0
+
+        h4 Comentarios 
+
+        each comentario in publicacion.comentarios 
+         
+          p 
+           
+           b #{comentario.Usuario.nombre}:
+           |  #{comentario.texto} 
