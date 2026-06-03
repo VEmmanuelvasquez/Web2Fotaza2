@@ -2,6 +2,7 @@ const Publicacion = require('../models/Publicacion');
 const Usuario = require('../models/Usuario');
 const {Op} = require('sequelize');
 const  Comentario = require('../models/Comentario');
+const Valoracion = require('../models/Valoracion');
 
 exports.feed = async (req, res) => {
     const busqueda = req.query.q || '';
@@ -12,6 +13,10 @@ exports.feed = async (req, res) => {
             {
                 model: Comentario,
                 include:[Usuario]
+            },
+
+            {
+                model: Valoracion
             }
         ],
 
@@ -25,6 +30,24 @@ exports.feed = async (req, res) => {
 
     });
     
+    publicaciones.forEach(publicacion => {
+
+    const cantidadVotos = publicacion.Valoracions.length;
+
+    const suma = publicacion.Valoracions.reduce(
+        (acc, valoracion) => acc + valoracion.puntaje,
+        0
+    );
+
+    publicacion.promedio =
+        cantidadVotos > 0
+            ? (suma / cantidadVotos).toFixed(1)
+            : 0;
+
+    publicacion.cantidadVotos = cantidadVotos;
+
+});
+
     res.render('feed/index', {
 
         publicaciones,
