@@ -20,7 +20,7 @@ html
       br
       a(href='/auth/logout') Logout
 
-      
+
     h3 Mis estadisticas 
 
       p Siguiendo: #{cantidadSiguiendo}
@@ -74,6 +74,9 @@ html
       
 
       if usuario && usuario.id === publicacion.usuarioId
+
+        a(href='/feed/editar/' + publicacion.id)
+          button(type='button') Editar 
         form(
           action='/feed/eliminar/' + publicacion.id
           method='POST'

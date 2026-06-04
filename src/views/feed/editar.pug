@@ -1,0 +1,48 @@
+doctype html
+html
+  head
+    title Editar publicacion
+
+  body
+
+    h1 Editar publicacion
+
+    form(
+      action='/feed/editar/' + publicacion.id
+      method='POST'
+      enctype='multipart/form-data'
+    )
+
+      p Titulo
+
+      input(
+        type='text'
+        name='titulo'
+        value=publicacion.titulo
+        required
+      )
+
+      br
+      br
+
+      p Descripcion
+
+      textarea(
+        name='descripcion'
+        required
+      )= publicacion.descripcion
+
+      br
+      br
+
+      p Nueva imagen (opcional)
+
+      input(
+        type='file'
+        name='imagen'
+      )
+
+      br
+      br
+
+      button(type='submit') Guardar cambios

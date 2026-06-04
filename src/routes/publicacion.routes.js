@@ -3,7 +3,7 @@ const router = express.Router();
 const publicacionController = require('../controllers/publicacion.controller');
 const authMiddleware = require('../middlewares/auth.middleware');
 const upload = require('../config/multers');
-
+const { isAuth } = require('../middlewares/auth.middleware');
 router.get('/',
 
     publicacionController.feed
@@ -24,6 +24,20 @@ router.post(
     '/eliminar/:id',
     authMiddleware.isAuth,
     publicacionController.eliminar
+)
+
+router.get(
+    '/editar/:id',
+    isAuth,
+    publicacionController.formEditar
+);
+
+router.post(
+    '/editar/:id',
+    isAuth,
+    upload.single('imagen'),
+    publicacionController.editar
+
 );
 
 module.exports = router;

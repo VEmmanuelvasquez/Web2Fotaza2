@@ -149,6 +149,78 @@ exports.crear = async (req, res) => {
             res.send('Error al eliminar');
         }
 
-
     };
+    
+    exports.formEditar = async (req, res) => {
 
+    const publicacion = await Publicacion.findByPk(
+        req.params.id
+    );
+
+    if (!publicacion) {
+        return res.send('Publicacion no encontrada');
+    }
+
+    if (
+        publicacion.usuarioId !==
+        req.session.usuario.id
+    ) {
+        return res.send('No autorizado');
+    }
+
+    res.render('feed/editar', {
+        publicacion
+    });
+
+};
+
+exports.editar = async (req, res) => {
+
+    try {
+
+        const publicacion =
+           await Publicacion.findByPk(req.params.id);
+
+        if(!publicacion) {
+            return res.send('Publicacion no encontrada');
+
+        }
+
+        if(
+            publicacion.usuarioId !==
+            req.session.usuario.id
+        ) {
+            return res.send('No autorizado');
+
+        }
+
+        publicacion.titulo =
+        req.body.titulo;
+
+
+
+        publicacion.descripcion =
+            req.body.descripcion;
+
+        if (req.file) {
+            publicacion.imagen =
+              req.file.filename;
+
+        await Valoracion.destroy({
+            where: {
+                publicacionId: publicacion.id
+            }
+        });
+        }
+        
+        await publicacion.save();
+
+        res.redirect('/feed');
+
+    } catch (error) {
+
+        console.log(error);
+
+        res.send('Error al editar')
+    }
+};
