@@ -20,6 +20,29 @@ html
       br
       a(href='/auth/logout') Logout
 
+      
+    h3 Mis estadisticas 
+
+      p Siguiendo: #{cantidadSiguiendo}
+
+      p Seguidores: #{cantidadSeguidores}
+
+    h3 Seguir usuarios 
+
+    each u in usuarios 
+      if usuario && usuario.id !== u.id 
+
+       p= u.nombre 
+      
+      if siguiendo.includes(u.id)
+       p ✅ Siguiendo 
+      else
+        form(
+          action='/seguimientos/seguir/' + u.id 
+          method='POST'
+        )
+          button(type='submit') Seguir
+
     each publicacion in publicaciones
       hr
 

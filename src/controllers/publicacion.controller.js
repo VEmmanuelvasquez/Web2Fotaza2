@@ -1,8 +1,10 @@
 const Publicacion = require('../models/Publicacion');
 const Usuario = require('../models/Usuario');
-const {Op} = require('sequelize');
+const {Op, where} = require('sequelize');
 const  Comentario = require('../models/Comentario');
 const Valoracion = require('../models/Valoracion');
+const Seguimiento = require('../models/Seguimiento');
+
 
 exports.feed = async (req, res) => {
     const busqueda = req.query.q || '';
@@ -29,7 +31,26 @@ exports.feed = async (req, res) => {
         order: [['id', 'DESC']]
 
     });
-    
+
+    const usuarios = await Usuario.findAll();
+
+    const seguimientos = await Seguimiento.findAll({
+       where: {
+        seguidorId: req.session.usuario.id
+       }
+
+    });
+
+    const siguiendo = seguimientos.map(s => s.seguidoId);
+
+    const  cantidadSiguiendo = siguiendo.length;
+
+    const cantidadSeguidores = await Seguimiento.count({
+        where:{
+            seguidoId:req.session.usuario.id
+        }
+    });
+
     publicaciones.forEach(publicacion => {
 
     const cantidadVotos = publicacion.Valoracions.length;
@@ -51,7 +72,10 @@ exports.feed = async (req, res) => {
     res.render('feed/index', {
 
         publicaciones,
-
+        usuarios,
+        siguiendo,
+        cantidadSiguiendo,
+        cantidadSeguidores,
         usuario: req.session.usuario
 
     });

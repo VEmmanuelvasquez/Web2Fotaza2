@@ -5,6 +5,9 @@ const pgSession = require('connect-pg-simple')(session);
 const app = express();
 const comentarioRoutes = require('./routes/comentario.routes');
 const valoracionRoutes = require('./routes/valoracion.routes');
+const seguimientoRoutes = require('./routes/seguimiento.routes');
+
+
 app.set('view engine','pug');
 
 app.set('views', path.join(__dirname,'views'));
@@ -38,7 +41,7 @@ app.use('/auth',require('./routes/auth.routes'));
 app.use('/feed', require('./routes/publicacion.routes'));
 app.use('/comentarios', comentarioRoutes);
 app.use('/valoraciones', valoracionRoutes);
-
+app.use('/seguimientos', seguimientoRoutes);
 
 
 
