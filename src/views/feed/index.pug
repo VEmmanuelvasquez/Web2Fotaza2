@@ -43,6 +43,11 @@ html
       
       if siguiendo.includes(u.id)
        p ✅ Siguiendo 
+       form(
+          action='/seguimientos/dejar-seguir/' + u.id 
+          method='POST'
+        )
+          button(typr='submit') Dejar de seguir
       else
         form(
           action='/seguimientos/seguir/' + u.id 
