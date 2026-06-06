@@ -1,0 +1,30 @@
+doctype html 
+html 
+ head 
+   title perfil 
+
+ body 
+
+   h1= usuarioPerfil.nombre 
+
+   p Email: #{usuarioPerfil.email}
+
+   p Seguidores: #{cantidadSeguidores}
+
+   p Siguiendo: #{cantidadSiguiendo}
+
+   a(href='/feed') Volver
+
+   h2 Publicaciones 
+
+   each publicacion in publicaciones 
+
+     hr
+
+     h3= publicacion.titulo 
+     p= publicacion.descripcion 
+
+     img(
+        src='/uploads/' + publicacion.imagen
+        width='300'
+      )

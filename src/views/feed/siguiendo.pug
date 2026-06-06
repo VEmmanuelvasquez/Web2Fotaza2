@@ -1,0 +1,32 @@
+doctype html
+html
+  head
+    title Publicaciones que sigo
+
+  body
+
+    h1 Publicaciones de usuarios que sigo
+
+    a(href='/feed')
+      button(type='button') Volver al feed
+
+    each publicacion in publicaciones
+
+      hr
+
+      h2= publicacion.titulo
+
+      p
+        b Usuario:
+        | #{publicacion.Usuario.nombre}
+
+      p= publicacion.descripcion
+
+      img(
+        src='/uploads/' + publicacion.imagen
+        width='300'
+      )
+
+      p
+        b Promedio:
+        | #{publicacion.promedio}⭐

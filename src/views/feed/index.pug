@@ -17,7 +17,14 @@ html
       button(type='submit') Buscar
     if usuario
       a(href='/feed/crear') Crear publicacion
+
       br
+
+      a(href='/feed/siguiendo')
+       | Publicaciones de usuarios que sigo
+
+      br
+
       a(href='/auth/logout') Logout
 
 
@@ -46,11 +53,13 @@ html
     each publicacion in publicaciones
       hr
 
+
       h2= publicacion.titulo
 
       p
         b Publicado por:
-        | #{publicacion.Usuario.nombre}
+        a(href='/usuarios/' + publicacion.Usuario.id)
+          | #{publicacion.Usuario.nombre}
 
       p
         b Fecha:
@@ -98,6 +107,9 @@ html
           button(type='submit') Comentar
 
       if publicacion.comentarios && publicacion.comentarios.length > 0
+
+    
+    
 
         h4 Comentarios 
 

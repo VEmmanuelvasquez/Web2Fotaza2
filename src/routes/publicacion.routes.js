@@ -40,4 +40,10 @@ router.post(
 
 );
 
+router.get(
+    '/siguiendo',
+    isAuth,
+    publicacionController.feedSiguiendo
+);
+
 module.exports = router;

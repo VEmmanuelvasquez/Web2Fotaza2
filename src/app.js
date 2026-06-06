@@ -6,6 +6,8 @@ const app = express();
 const comentarioRoutes = require('./routes/comentario.routes');
 const valoracionRoutes = require('./routes/valoracion.routes');
 const seguimientoRoutes = require('./routes/seguimiento.routes');
+const usuarioRoutes = require('./routes/usuario.routes');
+const Publicacion = require('./models/Publicacion');
 
 
 app.set('view engine','pug');
@@ -42,7 +44,7 @@ app.use('/feed', require('./routes/publicacion.routes'));
 app.use('/comentarios', comentarioRoutes);
 app.use('/valoraciones', valoracionRoutes);
 app.use('/seguimientos', seguimientoRoutes);
-
+app.use('/usuarios', usuarioRoutes);
 
 
 

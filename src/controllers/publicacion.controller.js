@@ -224,3 +224,60 @@ exports.editar = async (req, res) => {
         res.send('Error al editar')
     }
 };
+
+exports.feedSiguiendo = async (req, res) => {
+
+    const seguimientos = await Seguimiento.findAll({
+        where: {
+            seguidorId: req.session.usuario.id
+        }
+    });
+
+    const siguiendo = seguimientos.map(
+        s => s.seguidoId
+    );
+
+    const publicaciones = await Publicacion.findAll({
+
+        where: {
+            usuarioId: {
+                [Op.in]: siguiendo
+            }
+        },
+
+        include: [
+            Usuario,
+            {
+                model: Comentario,
+                include: [Usuario]
+            },
+            {
+                model:Valoracion
+            }
+        ],
+
+        order:[['id', 'DESC']]
+    });
+
+    publicaciones.forEach(publicacion => {
+
+        const cantidadVotos = publicacion.Valoracions.length;
+
+        const suma =
+           publicacion.Valoracions.reduce(
+            (acc, valoracion) =>
+                acc + valoracion.puntaje,
+            0
+           );
+
+        publicacion.promedio = cantidadVotos > 0 ? (suma / cantidadVotos).toFixed(1): 0;
+
+        publicacion.cantidadVotos = cantidadVotos;
+
+    });
+
+    res.render('feed/siguiendo', {
+        publicaciones,
+        usuario: req.session.usuario
+    });
+};

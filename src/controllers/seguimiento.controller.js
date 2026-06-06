@@ -45,5 +45,26 @@ exports.seguir = async (req, res) => {
         res.send('Error al seguir usuario');
 
     }
+};
+
+exports.dejarSeguir = async (req, res) => {
+
+    try{
+
+        await Seguimiento.destroy({
+            where: {
+                seguidorId: req.session.usuario.id,
+                seguidoId: req.params.id
+            }
+        });
+        
+    res.redirect('/feed');
+
+} catch(error) {
+
+    console.log(error);
+    res.send('Error al dejar de seguir');
+}
 
 };
+

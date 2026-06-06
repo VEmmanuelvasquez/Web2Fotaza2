@@ -13,4 +13,10 @@ router.post(
     seguimientoController.seguir
 );
 
+router.post(
+    '/dejar-seguir/:id',
+    isAuth,
+    seguimientoController.dejarSeguir
+);
+
 module.exports = router;
