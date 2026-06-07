@@ -1,0 +1,37 @@
+doctype html
+html
+
+  head
+    title Notificaciones
+
+  body
+
+    h1 Notificaciones
+
+    a(href='/feed')
+      button(type='button') Volver
+        
+
+    each n in notificaciones
+
+      hr
+
+      p Tipo: #{n.tipo}
+
+      p Usuario: #{n.Emisor.nombre}
+
+      p Fecha:
+        | #{new Date(n.createdAt).toLocaleString('es-AR')}
+
+      p Leída:
+        | #{n.leida}
+
+      if !n.leida
+
+        form(
+          action='/notificaciones/leer/' + n.id
+          method='POST'
+        )
+
+          button(type='submit') Marcar como leída
+            

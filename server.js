@@ -7,6 +7,7 @@ require('./src/models/Publicacion');
 require('./src/models/Comentario');
 require('./src/models/Valoracion');
 require('./src/models/Seguimiento');
+require('./src/models/Interes');
 
 const PORT = process.env.PORT || 3000;
 

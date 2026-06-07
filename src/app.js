@@ -9,6 +9,8 @@ const seguimientoRoutes = require('./routes/seguimiento.routes');
 const usuarioRoutes = require('./routes/usuario.routes');
 const Publicacion = require('./models/Publicacion');
 const adminRoutes = require('./routes/admin.routes');
+const notificacionRoutes = require('./routes/notificacion.routes');
+const interesRoutes = require('./routes/interes.routes');
 
 
 app.set('view engine','pug');
@@ -47,6 +49,7 @@ app.use('/valoraciones', valoracionRoutes);
 app.use('/seguimientos', seguimientoRoutes);
 app.use('/usuarios', usuarioRoutes);
 app.use('/admin', adminRoutes);
-
+app.use('/notificaciones', notificacionRoutes);
+app.use('/intereses', interesRoutes);
 
 module.exports = app;

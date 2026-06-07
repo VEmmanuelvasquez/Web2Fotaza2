@@ -145,3 +145,12 @@ html
             option(value='5') 5
 
           button(type='submit') Valorar
+
+
+      if usuario && usuario.id !== publicacion.usuarioId 
+        
+        form(
+          action='/intereses/crear/' + publicacion.id 
+          method='POST'
+        )
+          button(type='submit') Me interesa

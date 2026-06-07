@@ -1,5 +1,5 @@
 const Seguimiento = require('../models/Seguimiento');
-
+const Notificacion = require('../models/Notificacion');
 exports.seguir = async (req, res) => {
 
     console.log('=== SEGUIR===');
@@ -34,6 +34,12 @@ exports.seguir = async (req, res) => {
         await Seguimiento.create({
             seguidorId,
             seguidoId
+        });
+
+        await Notificacion.create({
+            tipo: 'seguimiento',
+            usuarioDestinoId: seguidoId,
+            usuarioEmisorId: seguidorId
         });
 
         console.log('Seguimiento creado')

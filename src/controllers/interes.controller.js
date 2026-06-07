@@ -1,28 +1,24 @@
-const Valoracion = require('../models/Valoracion');
+const Interes = require('../models/Interes');
 const Publicacion = require('../models/Publicacion');
 const Notificacion = require('../models/Notificacion');
 
 exports.crear = async (req, res) => {
 
     try {
-        const publicacion = await Publicacion.findByPk(
-            req.params.id
-        );
+        const publicacion = await Publicacion.findByPk(req.params.id);
 
         if (!publicacion) {
             return res.send('Publicacion no encontrada');
-
         }
 
         if (
-            publicacion.usuarioId ===
-            req.session.usuario.id
+            publicacion.usuarioId === req.session.usuario.id
         ) {
-            return res.send('No puedes valorar tu propia publicacion');
-
+            return res.send('No puedes interesarte en tu propia publicacion');
         }
 
-        const existe = await Valoracion.findOne({
+        const existe = await Interes.findOne({
+
             where: {
                 usuarioId: req.session.usuario.id,
                 publicacionId: req.params.id
@@ -30,26 +26,25 @@ exports.crear = async (req, res) => {
         });
 
         if (existe) {
-            return res.send('Ya valoraste esta publiacion');
+            return res.send('Ya marcaste interes en esta publicacion');
+
         }
 
-        await Valoracion.create({
-            puntaje: req.body.puntaje,
+        await Interes.create({
             usuarioId: req.session.usuario.id,
             publicacionId: req.params.id
         });
 
         await Notificacion.create({
-            tipo: 'valoracion',
+            tipo: 'interes',
             usuarioDestinoId: publicacion.usuarioId,
             usuarioEmisorId: req.session.usuario.id
         });
-
         res.redirect('/feed');
 
     } catch (error) {
-
         console.log(error);
-        res.send('Error al valorar');
+        res.send('Error al registrar interes');
+
     }
-}
+};
