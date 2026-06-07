@@ -55,8 +55,11 @@ exports.login =async (req,res) => {
         if (!usuario) {
             return res.send('usuario no encontrado');
 
-
         }
+        if (!usuario.estado) {
+        return res.send('Tu cuanta a sido desactivada por un administrador');
+        }
+        
 
         const valido =await bcrypt.compare(
             password,
@@ -74,7 +77,11 @@ exports.login =async (req,res) => {
         };
 
         req.session.save(() => {
-            res.redirect('/feed');
+           if(usuario.rol === 'admin') {
+            return res.redirect('/admin');
+           }
+
+           return res.redirect('/feed');
         });
 
     } catch (error) {

@@ -27,6 +27,11 @@ html
 
       a(href='/auth/logout') Logout
 
+      br
+
+      if usuario.rol === 'admin'
+        a(href='/admin') 🛠️ Panel de administracion
+
 
     h3 Mis estadisticas 
 
@@ -47,7 +52,7 @@ html
           action='/seguimientos/dejar-seguir/' + u.id 
           method='POST'
         )
-          button(typr='submit') Dejar de seguir
+          button(type='submit') Dejar de seguir
       else
         form(
           action='/seguimientos/seguir/' + u.id 

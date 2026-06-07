@@ -1,0 +1,38 @@
+doctype html
+html
+  head
+    title Administración
+
+  body
+    a(href='/feed') ← Volver al feed
+    
+    h1 Panel de Administración
+
+    each usuario in usuarios
+
+      hr
+
+      p ID: #{usuario.id}
+
+      p Nombre: #{usuario.nombre}
+
+      p Email: #{usuario.email}
+
+      p Rol: #{usuario.rol}
+
+      p Estado: #{usuario.estado}
+
+       if usuario.rol !== 'admin'
+
+       
+       
+         form(
+           action='/admin/estado/' + usuario.id 
+           method='POST'
+        )
+
+           if usuario.estado 
+             button(type='submit') Desactivar 
+
+           else 
+             button(type='submit') Activar
