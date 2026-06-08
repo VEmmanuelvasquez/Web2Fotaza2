@@ -171,6 +171,27 @@ html
         )
           button(type='submit') Me interesa
 
+        form(
+          action='/denuncias/crear/' + publicacion.id 
+          method='POST'
+        )
+
+          select(name='motivo')
+            
+            option(value='Spam') Spam 
+            option(value='Contenido ofensivo') Contenido ofensivo 
+            option(value='Copyright') Copyright 
+
+          input(
+
+            type='text'
+            name='descripcion'
+            placeholder='Justificacion de la denuncia'
+            required 
+          )
+
+          button(type='submit') 🚨 Denuncia
+
       if usuario && usuario.id !== publicacion.usuarioId
 
         form(

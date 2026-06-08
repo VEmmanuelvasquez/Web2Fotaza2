@@ -15,6 +15,7 @@ const favoritoRoutes = require('./routes/favorito.routes');
 const coleccionesRoutes = require('./routes/coleccion.routes');
 const ColeccionPublicacion = require('./models/ColeccionPublicacion');
 const coleccionPublicacionRoutes = require('./routes/coleccionPublicacion.routes');
+const denunciaRoutes = require('./routes/denuncia.routes');
 
 app.set('view engine','pug');
 
@@ -57,4 +58,6 @@ app.use('/intereses', interesRoutes);
 app.use('/favoritos', favoritoRoutes);
 app.use('/colecciones', coleccionesRoutes);
 app.use('/coleccion-publicacion', coleccionPublicacionRoutes);
+app.use('/denuncias', denunciaRoutes);
+
 module.exports = app;

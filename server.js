@@ -12,6 +12,9 @@ require('./src/models/Favorito');
 require('./src/models/Notificacion');
 require('./src/models/Coleccion');
 require('./src/models/ColeccionPublicacion');
+require('./src/models/Denuncia');
+
+
 const PORT = process.env.PORT || 3000;
 
     
