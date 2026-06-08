@@ -1,0 +1,24 @@
+doctype html
+html
+  head
+    title Crear colección
+
+  body
+    h1 Crear colección
+
+    form(action='/colecciones/crear' method='POST')
+
+      input(
+        type='text'
+        name='nombre'
+        placeholder='Nombre de la colección'
+        required
+      )
+
+      button(type='submit') Crear
+        
+
+    br
+
+    a(href='/colecciones')
+      | Volver

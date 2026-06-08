@@ -11,7 +11,10 @@ const Publicacion = require('./models/Publicacion');
 const adminRoutes = require('./routes/admin.routes');
 const notificacionRoutes = require('./routes/notificacion.routes');
 const interesRoutes = require('./routes/interes.routes');
-
+const favoritoRoutes = require('./routes/favorito.routes');
+const coleccionesRoutes = require('./routes/coleccion.routes');
+const ColeccionPublicacion = require('./models/ColeccionPublicacion');
+const coleccionPublicacionRoutes = require('./routes/coleccionPublicacion.routes');
 
 app.set('view engine','pug');
 
@@ -51,5 +54,7 @@ app.use('/usuarios', usuarioRoutes);
 app.use('/admin', adminRoutes);
 app.use('/notificaciones', notificacionRoutes);
 app.use('/intereses', interesRoutes);
-
+app.use('/favoritos', favoritoRoutes);
+app.use('/colecciones', coleccionesRoutes);
+app.use('/coleccion-publicacion', coleccionPublicacionRoutes);
 module.exports = app;

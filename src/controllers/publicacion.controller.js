@@ -4,7 +4,7 @@ const {Op, where} = require('sequelize');
 const  Comentario = require('../models/Comentario');
 const Valoracion = require('../models/Valoracion');
 const Seguimiento = require('../models/Seguimiento');
-
+const Coleccion = require('../models/Coleccion');
 
 exports.feed = async (req, res) => {
     const busqueda = req.query.q || '';
@@ -69,6 +69,13 @@ exports.feed = async (req, res) => {
 
 });
 
+   const colecciones = await Coleccion.findAll({
+
+    where: {
+        usuarioId: req.session.usuario.id
+    }
+   });
+
     res.render('feed/index', {
 
         publicaciones,
@@ -76,7 +83,8 @@ exports.feed = async (req, res) => {
         siguiendo,
         cantidadSiguiendo,
         cantidadSeguidores,
-        usuario: req.session.usuario
+        usuario: req.session.usuario,
+        colecciones
 
     });
 

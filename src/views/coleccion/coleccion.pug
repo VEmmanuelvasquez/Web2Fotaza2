@@ -1,0 +1,44 @@
+doctype html
+html
+  head
+    title Mis colecciones
+
+  body
+    h1 Mis colecciones
+
+    a(href='/colecciones/crear') Crear colección
+
+    br
+    br
+
+    a(href='/feed') Volver al feed
+
+    hr
+
+    each coleccion in colecciones
+
+      h3= coleccion.nombre
+
+      if coleccion.Publicacions && coleccion.Publicacions.length > 0
+
+        each publicacion in coleccion.Publicacions
+
+          h4= publicacion.titulo
+
+          p
+            b Autor:
+            |  #{publicacion.Usuario.nombre}
+
+          img(
+            src='/uploads/' + publicacion.imagen
+            width='200'
+          )
+
+          br
+          br
+
+      else
+
+        p No hay publicaciones en esta colección
+
+      hr

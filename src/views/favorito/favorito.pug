@@ -1,0 +1,27 @@
+doctype html
+html
+  head
+    title Favoritos
+
+  body
+
+    h1 Mis Favoritos
+
+    a(href='/feed') Volver
+
+    each f in favoritos
+
+      hr
+
+      h2= f.Publicacion.titulo
+
+      p
+        b Autor:
+        | #{f.Publicacion.Usuario.nombre}
+
+      p= f.Publicacion.descripcion
+
+      img(
+        src='/uploads/' + f.Publicacion.imagen
+        width='300'
+      )

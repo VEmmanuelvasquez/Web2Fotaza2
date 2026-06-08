@@ -8,7 +8,10 @@ require('./src/models/Comentario');
 require('./src/models/Valoracion');
 require('./src/models/Seguimiento');
 require('./src/models/Interes');
-
+require('./src/models/Favorito');
+require('./src/models/Notificacion');
+require('./src/models/Coleccion');
+require('./src/models/ColeccionPublicacion');
 const PORT = process.env.PORT || 3000;
 
     
