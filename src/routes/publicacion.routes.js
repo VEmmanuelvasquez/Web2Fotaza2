@@ -4,6 +4,8 @@ const publicacionController = require('../controllers/publicacion.controller');
 const authMiddleware = require('../middlewares/auth.middleware');
 const upload = require('../config/multers');
 const { isAuth } = require('../middlewares/auth.middleware');
+
+
 router.get('/',
 
     publicacionController.feed
@@ -44,6 +46,12 @@ router.get(
     '/siguiendo',
     isAuth,
     publicacionController.feedSiguiendo
+);
+
+router.post(
+    '/toggle-comentarios/:id',
+    isAuth,
+    publicacionController.toggleComentarios
 );
 
 module.exports = router;

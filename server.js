@@ -13,7 +13,8 @@ require('./src/models/Notificacion');
 require('./src/models/Coleccion');
 require('./src/models/ColeccionPublicacion');
 require('./src/models/Denuncia');
-
+require('./src/models/Etiqueta');
+require('./src/models/PublicacionEtiqueta');
 
 const PORT = process.env.PORT || 3000;
 

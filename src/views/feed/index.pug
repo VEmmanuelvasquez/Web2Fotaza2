@@ -8,84 +8,52 @@ html
 
     form(action='/feed' method='GET')
       input(
-      type='text'
-      name='q'
-      placeholder='Buscar publicaciones'
-      value=busqueda
-    ) 
-
+        type='text'
+        name='q'
+        placeholder='Buscar publicaciones'
+        value=busqueda
+      ) 
       button(type='submit') Buscar
+
     if usuario
       a(href='/feed/crear') Crear publicacion
-
       br
-
-      a(href='/feed/siguiendo')
-       | Publicaciones de usuarios que sigo
-
+      a(href='/feed/siguiendo') Publicaciones de usuarios que sigo
       br
-
-      a(href='/favoritos')
-       | Mis favoritos
-
+      a(href='/favoritos') Mis favoritos
       br
-
-      a(href='/colecciones')
-       | Mis colecciones 
-
+      a(href='/colecciones') Mis colecciones 
       br
-
-      a(href='/notificaciones')
-       | Notificaciones 
-
+      a(href='/notificaciones') Notificaciones 
       br
-
-
       a(href='/auth/logout') Logout
-
       br
-
       if usuario.rol === 'admin'
         a(href='/admin') 🛠️ Panel de administracion
 
-
     h3 Mis estadisticas 
-
     p Siguiendo: #{cantidadSiguiendo}
-
     p Seguidores: #{cantidadSeguidores}
 
     h3 Seguir usuarios 
-
     each u in usuarios 
       if usuario && usuario.id !== u.id 
-
-       p= u.nombre 
-      
-      if siguiendo.includes(u.id)
-       p ✅ Siguiendo 
-       form(
-          action='/seguimientos/dejar-seguir/' + u.id 
-          method='POST'
-        )
-          button(type='submit') Dejar de seguir
-      else
-        form(
-          action='/seguimientos/seguir/' + u.id 
-          method='POST'
-        )
-          button(type='submit') Seguir
+        p= u.nombre 
+        if siguiendo.includes(u.id)
+          p ✅ Siguiendo 
+          form(action='/seguimientos/dejar-seguir/' + u.id method='POST')
+            button(type='submit') Dejar de seguir
+        else
+          form(action='/seguimientos/seguir/' + u.id method='POST')
+            button(type='submit') Seguir
 
     each publicacion in publicaciones
       hr
-
-
       h2= publicacion.titulo
 
       p
         b Publicado por:
-        a(href='/usuarios/' + publicacion.Usuario.id)
-          | #{publicacion.Usuario.nombre}
+        a(href='/usuarios/' + publicacion.Usuario.id) #{publicacion.Usuario.nombre}
 
       p
         b Fecha:
@@ -93,124 +61,84 @@ html
 
       p= publicacion.descripcion
 
-      img(
-        src='/uploads/' + publicacion.imagen
-        width='300'
-      )
+      img(src='/uploads/' + publicacion.imagen width='300')
 
       p 
-
         b Promedio: 
         | #{publicacion.promedio} ⭐
 
       p 
         b Votos: 
         | #{publicacion.cantidadVotos}
+
+      if publicacion.Etiqueta && publicacion.Etiqueta.length > 0
+
+        p 
+          b Etiquetas: 
+
+          each etiqueta in publicacion.Etiqueta 
+
+            span  #{etiqueta.nombre}
+            |
       
-
       if usuario && usuario.id === publicacion.usuarioId
-
         a(href='/feed/editar/' + publicacion.id)
           button(type='button') Editar 
-        form(
-          action='/feed/eliminar/' + publicacion.id
-          method='POST'
-        )
+        form(action='/feed/eliminar/' + publicacion.id method='POST')
           button(type='submit') Eliminar
 
       if usuario 
-        form(
-          action='/comentarios/crear/' + publicacion.id 
-          method='POST'
-        )
+        if !publicacion.comentariosCerrados
+          form(action='/comentarios/crear/' + publicacion.id method='POST')
+            input(type="text" name='texto' placeholder='Escribe un comentario' required)
+            button(type='submit') Comentar
+        else 
+          p 🔒 Comentarios cerrados
 
-          input(
-            type="text"
-            name='texto'
-            placeholder='EScribe un comentario'
-            required
-              )
-          button(type='submit') Comentar
+        // 🔽 Botón de abrir/cerrar siempre visible para el autor
+        if usuario.id === publicacion.usuarioId 
+          form(action='/feed/toggle-comentarios/' + publicacion.id method='POST')
+            if publicacion.comentariosCerrados 
+              button(type='submit') 🔓 Abrir comentarios
+            else 
+              button(type='submit') 🔒 Cerrar comentarios
 
       if publicacion.comentarios && publicacion.comentarios.length > 0
-
-    
-    
-
         h4 Comentarios 
-
         each comentario in publicacion.comentarios 
-         
           p 
-           
-           b #{comentario.Usuario.nombre}:
-           |  #{comentario.texto} 
+            b #{comentario.Usuario.nombre}:
+            |  #{comentario.texto} 
 
       if usuario 
-
-        form(
-          action='/valoraciones/crear/' + publicacion.id 
-          method='POST'
-        )
-
+        form(action='/valoraciones/crear/' + publicacion.id method='POST')
           select(name='puntaje')
             option(value='1') 1
             option(value='2') 2
             option(value='3') 3
             option(value='4') 4
             option(value='5') 5
-
           button(type='submit') Valorar
 
-
       if usuario && usuario.id !== publicacion.usuarioId 
-        
-        form(
-          action='/intereses/crear/' + publicacion.id 
-          method='POST'
-        )
+        form(action='/intereses/crear/' + publicacion.id method='POST')
           button(type='submit') Me interesa
 
-        form(
-          action='/denuncias/crear/' + publicacion.id 
-          method='POST'
-        )
-
+        form(action='/denuncias/crear/' + publicacion.id method='POST')
           select(name='motivo')
-            
             option(value='Spam') Spam 
             option(value='Contenido ofensivo') Contenido ofensivo 
             option(value='Copyright') Copyright 
-
-          input(
-
-            type='text'
-            name='descripcion'
-            placeholder='Justificacion de la denuncia'
-            required 
-          )
-
+          input(type='text' name='descripcion' placeholder='Justificacion de la denuncia' required)
           button(type='submit') 🚨 Denuncia
 
       if usuario && usuario.id !== publicacion.usuarioId
-
-        form(
-          action='/favoritos/guardar/' + publicacion.id 
-          method='Post'
-        )
+        form(action='/favoritos/guardar/' + publicacion.id method='POST')
           button(type='submit') ⭐ Guardar en favoritos
 
       if usuario && colecciones 
-        
-        form(
-          action='/coleccion-publicacion/agregar/' + publicacion.id 
-          method='POST'
-        )
-
+        form(action='/coleccion-publicacion/agregar/' + publicacion.id method='POST')
           select(name='coleccionId')
-
             each coleccion in colecciones 
-
-             option(value=coleccion.id)= coleccion.nombre 
-
+              option(value=coleccion.id)= coleccion.nombre 
           button(type='submit') Agregar a coleccion

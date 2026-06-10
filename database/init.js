@@ -14,7 +14,7 @@ require('../src/models/ColeccionPublicacion');
 require('../src/models/Notificacion');
 require('../src/models/Denuncia');
 
-sequelize.sync({ force: true })
+sequelize.sync()
 .then(() => {
     console.log('Base de datos inicializada correctamente');
     process.exit(0);

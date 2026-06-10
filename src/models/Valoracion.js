@@ -35,7 +35,7 @@ Publicacion.hasMany(Valoracion, {
 });
 
 Valoracion.belongsTo(Publicacion, {
-    foreignKey: 'publicidadId'
+    foreignKey: 'publicacionId'
 });
 
 module.exports = Valoracion;

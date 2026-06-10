@@ -1,6 +1,7 @@
 const {DataTypes} = require('sequelize');
 const sequelize = require('../config/db');
 const Usuario = require('./Usuario');
+
 const Publicacion = sequelize.define('Publicacion', {
     
     id:{
@@ -24,7 +25,12 @@ const Publicacion = sequelize.define('Publicacion', {
 
         type: DataTypes.STRING,
         allowNull: false
-}
+},
+
+    comentariosCerrados: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    }
 
 },{
 
@@ -39,5 +45,6 @@ Usuario.hasMany(Publicacion,{
 Publicacion.belongsTo(Usuario,{
     foreignKey: 'usuarioId'
 });
+
 
 module.exports = Publicacion;

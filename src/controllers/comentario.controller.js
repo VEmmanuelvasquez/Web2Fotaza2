@@ -6,6 +6,17 @@ exports.crear = async (req, res) => {
 
     try {
 
+        const publicacion = await Publicacion.findByPk(req.params.id);
+
+        if (!publicacion) {
+            return res.send('Publicacion no encontrada');
+        }
+
+        if (publicacion.comentariosCerrados) {
+            return res.send('Comentarios cerrados');
+
+        }
+
         await Comentario.create({
 
             texto: req.body.texto,
@@ -13,11 +24,7 @@ exports.crear = async (req, res) => {
             publicacionId: req.params.id
         });
         
-        const publicacion = await Publicacion.findByPk(req.params.id);
-
-        if (
-            publicacion && publicacion.usuarioId !== req.session.usuario.id
-        ) {
+       if (publicacion.usuarioId !== req.session.usuario.id) {
             
         await  Notificacion.create({
             tipo: 'comentario',
