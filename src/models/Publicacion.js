@@ -23,7 +23,7 @@ const Publicacion = sequelize.define('Publicacion', {
 
     imagen: {
 
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
 },
 

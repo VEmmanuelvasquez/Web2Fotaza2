@@ -1,0 +1,47 @@
+doctype html
+html
+  head
+    title Denuncias comentarios
+
+  body
+    h1 Denuncias de comentarios
+
+    if denuncias.length > 0
+      each denuncia in denuncias
+        hr
+        p
+          b Usuario:
+          | #{denuncia.Usuario ? denuncia.Usuario.nombre : '(Usuario eliminado)'}
+        p
+          b Motivo:
+          | #{denuncia.motivo}
+        p
+          b Descripción:
+          | #{denuncia.descripcion}
+        p
+          b Comentario:
+          if denuncia.comentario
+            | #{denuncia.comentario.texto}
+          else
+            | (Comentario eliminado)
+        p
+          b Publicación:
+          if denuncia.comentario && denuncia.comentario.Publicacion
+            | #{denuncia.comentario.Publicacion.titulo}
+          else
+            | (Publicación eliminada)
+        p
+          b Imagen de la publicación:
+          if denuncia.comentario && denuncia.comentario.Publicacion && denuncia.comentario.Publicacion.imagen
+            img(src=`/uploads/${denuncia.comentario.Publicacion.imagen}`, alt="Imagen publicación", width="200")
+          else
+            | (Sin imagen)
+
+        
+        if denuncia.comentario
+          form(
+            action='/denuncias-comentarios/eliminar-comentario/' + denuncia.comentario.id
+            method='POST'
+          )
+            button(type='submit') Eliminar comentario
+

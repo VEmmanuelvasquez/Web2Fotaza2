@@ -15,6 +15,7 @@ require('./src/models/ColeccionPublicacion');
 require('./src/models/Denuncia');
 require('./src/models/Etiqueta');
 require('./src/models/PublicacionEtiqueta');
+require('./src/models/DenunciaComentario');
 
 const PORT = process.env.PORT || 3000;
 

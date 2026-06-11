@@ -19,7 +19,7 @@ router.get('/crear',
 
 router.post('/crear',
     authMiddleware.isAuth,
-    upload.single('imagen'),
+    upload.array('imagenes',10),
     publicacionController.crear
 );
 router.post(
@@ -37,7 +37,7 @@ router.get(
 router.post(
     '/editar/:id',
     isAuth,
-    upload.single('imagen'),
+    upload.array('imagenes',10),
     publicacionController.editar
 
 );

@@ -26,6 +26,8 @@ html
       br
       a(href='/notificaciones') Notificaciones 
       br
+      a(href='/denuncias-comentarios') Ver denuncias de comentarios
+      br
       a(href='/auth/logout') Logout
       br
       if usuario.rol === 'admin'
@@ -60,8 +62,13 @@ html
         | #{new Date(publicacion.createdAt).toLocaleString('es-AR')}
 
       p= publicacion.descripcion
-
-      img(src='/uploads/' + publicacion.imagen width='300')
+      
+      
+      if publicacion.listaImagenes.length > 0
+        each imagen in publicacion.listaImagenes
+          img(src='/uploads/' + imagen, width='300')
+      else
+        p (Sin imágenes)
 
       p 
         b Promedio: 
@@ -72,15 +79,12 @@ html
         | #{publicacion.cantidadVotos}
 
       if publicacion.Etiqueta && publicacion.Etiqueta.length > 0
-
         p 
           b Etiquetas: 
-
           each etiqueta in publicacion.Etiqueta 
-
-            span  #{etiqueta.nombre}
+            span.tag #{etiqueta.nombre}
             |
-      
+
       if usuario && usuario.id === publicacion.usuarioId
         a(href='/feed/editar/' + publicacion.id)
           button(type='button') Editar 
@@ -95,7 +99,6 @@ html
         else 
           p 🔒 Comentarios cerrados
 
-        // 🔽 Botón de abrir/cerrar siempre visible para el autor
         if usuario.id === publicacion.usuarioId 
           form(action='/feed/toggle-comentarios/' + publicacion.id method='POST')
             if publicacion.comentariosCerrados 
@@ -106,9 +109,26 @@ html
       if publicacion.comentarios && publicacion.comentarios.length > 0
         h4 Comentarios 
         each comentario in publicacion.comentarios 
-          p 
-            b #{comentario.Usuario.nombre}:
-            |  #{comentario.texto} 
+          div.comentario
+            p 
+              b #{comentario.Usuario.nombre}:
+              |  #{comentario.texto} 
+
+            if usuario && usuario.id !== comentario.usuarioId
+              div.denuncia-comentario
+                form(action='/denuncias-comentarios/crear/' + comentario.id method='POST')
+                  label(for='motivo' hidden) Motivo
+                  select(name='motivo' id='motivo')
+                    option(value='Spam') Spam
+                    option(value='Contenido ofensivo') Contenido ofensivo
+                    option(value='Acoso') Acoso
+                    option(value='Copyright') Copyright
+                  textarea(
+                    name='descripcion'
+                    placeholder='Justificación de la denuncia'
+                    required
+                  )
+                  button(type='submit') 🚨 Denunciar comentario
 
       if usuario 
         form(action='/valoraciones/crear/' + publicacion.id method='POST')
@@ -129,7 +149,7 @@ html
             option(value='Spam') Spam 
             option(value='Contenido ofensivo') Contenido ofensivo 
             option(value='Copyright') Copyright 
-          input(type='text' name='descripcion' placeholder='Justificacion de la denuncia' required)
+          input(type='text' name='descripcion' placeholder='Justificación de la denuncia' required)
           button(type='submit') 🚨 Denuncia
 
       if usuario && usuario.id !== publicacion.usuarioId

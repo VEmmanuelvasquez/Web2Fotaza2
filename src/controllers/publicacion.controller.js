@@ -10,6 +10,7 @@ const Etiqueta = require('../models/Etiqueta');
 exports.feed = async (req, res) => {
     const busqueda = req.query.q || '';
     const publicaciones = await Publicacion.findAll({
+
         include: [
             Usuario,
             {
@@ -23,13 +24,45 @@ exports.feed = async (req, res) => {
                 model: Etiqueta
             }
         ],
-        where: {
-            titulo: {
-                [Op.iLike]: `%${busqueda}%`
+        where: busqueda
+            ? {
+                [Op.or]: [
+                    {
+                        titulo: {
+                            [Op.iLike]: `%${busqueda}%`
+                        }
+                    },
+                    {
+                        descripcion: {
+                            [Op.iLike]: `%${busqueda}%`
+                        }
+                    },
+                    {
+                        '$Usuario.nombre$': {
+                            [Op.iLike]: `%${busqueda}%`
+                        }
+                    },
+                    {
+                        '$Etiquetas.nombre$': {
+                            [Op.iLike]: `%${busqueda}%`
+                        }
+                    }
+                ]
             }
-        },
+            : {},
         order: [['id', 'DESC']]
+    
     });
+    publicaciones.forEach(publicacion => {
+
+    publicacion.listaImagenes =
+        publicacion.imagen
+            ? publicacion.imagen.split(',')
+            : [];
+
+});
+
+
 
     const usuarios = await Usuario.findAll();
 
@@ -107,12 +140,18 @@ exports.formCrear = (req, res) => {
 
 exports.crear = async (req, res) => {
     try {
+
+        console.log('FILES:', req.files)
+        const imagenes = req.files ? req.files.map(archivo => archivo.filename) : [];
+
         const publicacion = await Publicacion.create({
-            titulo: req.body.titulo,
-            descripcion: req.body.descripcion,
-            imagen: req.file ? req.file.filename : null,
-            usuarioId: req.session.usuario ? req.session.usuario.id : null
+           titulo: req.body.titulo,
+           descripcion: req.body.descripcion,
+           imagen: imagenes.join(','),
+           usuarioId: req.session.usuario.id
         });
+
+         
 
         if (req.body.etiquetas) {
             const etiquetas = req.body.etiquetas.split(',').map(e => e.trim());
@@ -170,14 +209,14 @@ exports.editar = async (req, res) => {
             return res.send('No autorizado');
         }
 
+        
         publicacion.titulo = req.body.titulo;
         publicacion.descripcion = req.body.descripcion;
 
-        if (req.file) {
-            publicacion.imagen = req.file.filename;
-            await Valoracion.destroy({
-                where: { publicacionId: publicacion.id }
-            });
+        
+        if (req.files && req.files.length > 0) {
+            const imagenes = req.files.map(archivo => archivo.filename);
+            publicacion.imagen = imagenes.join(',');
         }
 
         await publicacion.save();
@@ -187,6 +226,7 @@ exports.editar = async (req, res) => {
         res.send('Error al editar');
     }
 };
+
 
 exports.feedSiguiendo = async (req, res) => {
     const seguimientos = await Seguimiento.findAll({
@@ -214,13 +254,22 @@ exports.feedSiguiendo = async (req, res) => {
             0
         );
 
-        const promedio = cantidadVotos > 0 ? (suma / cantidadVotos).toFixed(1) : 0;
+        const promedio =
+            cantidadVotos > 0
+                ? (suma / cantidadVotos).toFixed(1)
+                : 0;
 
         publicacion.promedio = promedio;
         publicacion.cantidadVotos = cantidadVotos;
         publicacion.score = Number(promedio) + (cantidadVotos * 0.2);
+
+        publicacion.listaImagenes =
+            publicacion.imagen
+                ? publicacion.imagen.split(',')
+                : [];
     });
 
+    
     res.render('feed/siguiendo', {
         publicaciones,
         usuario: req.session.usuario
