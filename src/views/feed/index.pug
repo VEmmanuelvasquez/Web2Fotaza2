@@ -63,10 +63,18 @@ html
 
       p= publicacion.descripcion
       
-      
+      p
+        b Licencia: 
+        | #{publicacion.licencia}
+
+      if publicacion.marcaAgua 
+
+        
       if publicacion.listaImagenes.length > 0
         each imagen in publicacion.listaImagenes
           img(src='/uploads/' + imagen, width='300')
+      else if publicacion.mensajeInvitado
+        p(style="color:red; font-weight:bold")= publicacion.mensajeInvitado
       else
         p (Sin imágenes)
 

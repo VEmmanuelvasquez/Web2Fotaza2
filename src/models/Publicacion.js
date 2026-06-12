@@ -27,6 +27,24 @@ const Publicacion = sequelize.define('Publicacion', {
         allowNull: false
 },
 
+    licencia: {
+        type: DataTypes.ENUM(
+            'copyright',
+            'sin-copyright'
+        ),
+        defaultValue: 'copyright'
+    },
+
+    marcaAgua: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    },
+
+    textoMarcaAgua: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+
     comentariosCerrados: {
         type: DataTypes.BOOLEAN,
         defaultValue: false

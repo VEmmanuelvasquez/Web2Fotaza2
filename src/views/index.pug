@@ -1,20 +1,39 @@
-html 
+html
 
-head 
-title fotaza2 
+head
+  title fotaza2
 
-link(
+  link(
     rel='stylesheet',
     href='/css/style.css'
-)
+  )
 
-body 
-h1 fotaza2 
+body
 
-if usuario 
-  h2 Bienvenido  #{usuario.nombre}
-  a(href='/auth/logout')
-else
-  a(href='/auth/login') Login
-  br
-  a(href='/auth/register') Registro
+  h1 fotaza2
+
+  if usuario
+
+    h2 Bienvenido #{usuario.nombre}
+
+    br
+
+    a(href='/feed') Entrar al feed
+
+    br
+
+    a(href='/auth/logout') Logout
+
+  else
+
+    a(href='/auth/login') Login
+
+    br
+
+    a(href='/auth/register') Registro
+
+    br
+    br
+
+    a(href='/feed')
+      button(type='button') Entrar como invitado

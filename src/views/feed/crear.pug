@@ -42,3 +42,30 @@ html
       br
 
       button(type='submit') Publicar
+
+      br
+      br
+
+      label Licencia
+
+      select(name='licencia')
+        option(value='copyright') Con copyright
+        option(value='sin-copyright') Sin copyright
+
+      br
+      br
+
+      label Aplicar marca de agua
+
+      input(
+        type='checkbox'
+        name='marcaAgua'
+       )
+
+      br
+
+      input(
+        type='text'
+        name='textoMarcaAgua'
+        placeholder='Texto de marca de agua'
+      )
