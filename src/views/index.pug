@@ -1,39 +1,19 @@
+doctype html
 html
+  head
+    title fotaza2
+    link(rel='stylesheet', href='/css/style.css')
+  body
+    nav.navbar
+      h1.fotaza2 fotaza2
+      div.nav-links
+        if usuario
+          a(href='/feed') Entrar al feed
+          a(href='/auth/logout') Logout
+        else
+          a(href='/auth/login') Login
+          a(href='/auth/register') Registro
+          a(href='/feed') Entrar como invitado
 
-head
-  title fotaza2
-
-  link(
-    rel='stylesheet',
-    href='/css/style.css'
-  )
-
-body
-
-  h1 fotaza2
-
-  if usuario
-
-    h2 Bienvenido #{usuario.nombre}
-
-    br
-
-    a(href='/feed') Entrar al feed
-
-    br
-
-    a(href='/auth/logout') Logout
-
-  else
-
-    a(href='/auth/login') Login
-
-    br
-
-    a(href='/auth/register') Registro
-
-    br
-    br
-
-    a(href='/feed')
-      button(type='button') Entrar como invitado
+    if usuario
+      h2 Bienvenido #{usuario.nombre}

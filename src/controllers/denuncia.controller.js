@@ -23,7 +23,7 @@ exports.crear = async(req, res) => {
         usuarioId: req.session.usuario.id,
         publicacionId: req.params.id
     });
-
+    req.session.lastPubId = publicacionId;
     res.redirect('/feed');
      }catch(error){
 

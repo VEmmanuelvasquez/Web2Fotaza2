@@ -11,6 +11,7 @@ exports.crear = async ( req, res) => {
         nombre: req.body.nombre,
         usuarioId: req.session.usuario.id
     });
+    req.session.lastPubId = publicacionId;
     res.redirect('/colecciones');
 };
 

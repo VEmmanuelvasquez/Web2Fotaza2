@@ -53,7 +53,7 @@ app.use('/feed', require('./routes/publicacion.routes'));
 app.use('/comentarios', comentarioRoutes);
 app.use('/valoraciones', valoracionRoutes);
 app.use('/seguimientos', seguimientoRoutes);
-app.use('/usuarios', usuarioRoutes);
+app.use('/usuario', usuarioRoutes);
 app.use('/admin', adminRoutes);
 app.use('/notificaciones', notificacionRoutes);
 app.use('/intereses', interesRoutes);

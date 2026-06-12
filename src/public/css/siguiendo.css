@@ -1,0 +1,75 @@
+/* ==========================================
+   Publicaciones que sigo 
+========================================== */
+
+body {
+  background: #f4f4f4;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  text-align: center;
+  margin: 20px 0;
+  color: #333;
+  font-size: 22px;
+}
+
+/* Botón Volver al feed */
+a.volver {
+  text-decoration: none; /* quita subrayado */
+}
+
+a.volver button {
+  float: right; /* esquina superior derecha */
+  margin: 0 20px 20px 0;
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+a.volver button:hover {
+  background: #2980b9;
+  transform: scale(1.02);
+}
+
+/* Tarjeta de publicación */
+.publicacion {
+  background: white;
+  width: 90%;
+  max-width: 500px;
+  margin: 15px auto;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.1);
+}
+
+.publicacion h2 {
+  margin: 0 0 10px 0;
+  color: #222;
+  font-size: 18px;
+}
+
+.publicacion p {
+  margin: 5px 0;
+  font-size: 13px;
+  color: #555;
+}
+
+.publicacion b {
+  color: #333;
+}
+
+.publicacion img {
+  display: block;
+  margin: 10px auto;
+  max-width: 100%;
+  border-radius: 6px;
+  box-shadow: 0 1px 6px rgba(0,0,0,.1);
+}

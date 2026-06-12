@@ -1,6 +1,220 @@
 body{
-    background-color: #111;
-    color: white;
-    font-family : Arial;
-    padding: 20px;
+background:#f4f4f4;
+font-family:Arial, Helvetica, sans-serif;
+margin:0;
 }
+
+.navbar{
+background:#222;
+color:white;
+padding:15px 25px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.navbar a{
+color:white;
+text-decoration:none;
+margin-left:15px;
+}
+
+.main-feed{
+width:80%;
+margin:auto;
+}
+
+.card-publicacion{
+background:white;
+margin-top:20px;
+padding:20px;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,.1);
+}
+
+.foto-publicacion{
+width:300px;
+border-radius:10px;
+margin:5px;
+}
+
+.galeria{
+display:flex;
+flex-wrap:wrap;
+}
+
+.estadisticas{
+display:flex;
+gap:15px;
+margin-top:10px;
+font-weight:bold;
+}
+
+.tags{
+margin-top:10px;
+}
+
+.tag{
+background:#3498db;
+color:white;
+padding:4px 8px;
+border-radius:5px;
+margin-right:5px;
+}
+
+.comentario{
+background:#f7f7f7;
+padding:10px;
+margin-top:8px;
+border-radius:8px;
+}
+
+.busqueda{
+text-align:center;
+margin-top:20px;
+}
+
+button{
+padding:8px 12px;
+cursor:pointer;
+margin-top:5px;
+}
+
+.aviso{
+color:red;
+font-weight:bold;
+}
+/* ==========================================
+   BOTONES DE PUBLICACIONES
+========================================== */
+
+.card-publicacion button{
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Contenedor de acciones */
+
+.acciones{
+    display:flex;
+    flex-wrap:wrap;
+    gap:5px;
+    margin-top:10px;
+}
+
+.acciones form{
+    margin:0;
+}
+
+/* Formularios dentro de publicaciones */
+
+.card-publicacion form{
+    margin-top:5px;
+}
+
+/* Inputs y selects más compactos */
+
+.card-publicacion input[type="text"],
+.card-publicacion select,
+.card-publicacion textarea{
+    font-size:12px;
+    padding:4px;
+    border-radius:5px;
+    margin-top:4px;
+}
+
+/* Comentarios */
+
+.comentario{
+    background:#f7f7f7;
+    padding:10px;
+    margin-top:8px;
+    border-radius:8px;
+}
+
+/* Botones de comentar, valorar, denunciar, etc */
+
+.card-publicacion button:hover{
+    opacity:0.9;
+}
+
+/* Área de comentarios */
+
+.card-publicacion textarea{
+    width:100%;
+    max-width:400px;
+    resize:vertical;
+}
+
+/* Imágenes */
+
+.foto-publicacion{
+    width:250px;
+    height:250px;
+    object-fit:cover;
+    border-radius:10px;
+    margin:5px;
+}
+
+/* Etiquetas */
+
+.tags{
+    margin-top:10px;
+}
+
+.tag{
+    background:#3498db;
+    color:white;
+    padding:4px 8px;
+    border-radius:5px;
+    margin-right:5px;
+}
+
+/* Estadísticas */
+
+.estadisticas{
+    display:flex;
+    gap:15px;
+    margin-top:10px;
+    font-weight:bold;
+}
+
+/* ==========================================
+   click fotos
+========================================== */
+
+.foto-publicacion{
+    width:180px;
+    height:180px;
+    object-fit:cover;
+    border-radius:10px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.foto-publicacion:hover{
+    transform:scale(1.03);
+}
+
+.modal-imagen{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.9);
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+.modal-imagen img{
+    max-width:90%;
+    max-height:90%;
+    border-radius:10px;
+}
+
+

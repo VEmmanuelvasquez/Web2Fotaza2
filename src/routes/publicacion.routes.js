@@ -5,53 +5,29 @@ const authMiddleware = require('../middlewares/auth.middleware');
 const upload = require('../config/multers');
 const { isAuth } = require('../middlewares/auth.middleware');
 
-
-router.get('/',
-
-    publicacionController.feed
-);
+router.get('/', publicacionController.feed);
 
 router.get('/crear',
     authMiddleware.isAuth,
     publicacionController.formCrear
-
-)
+);
 
 router.post('/crear',
     authMiddleware.isAuth,
     upload.array('imagenes',10),
     publicacionController.crear
 );
-router.post(
-    '/eliminar/:id',
-    authMiddleware.isAuth,
-    publicacionController.eliminar
-)
-
-router.get(
-    '/editar/:id',
-    isAuth,
-    publicacionController.formEditar
-);
 
 router.post(
-    '/editar/:id',
+    '/toggle-comentarios/:id',
     isAuth,
-    upload.array('imagenes',10),
-    publicacionController.editar
-
+    publicacionController.toggleComentarios
 );
 
 router.get(
     '/siguiendo',
     isAuth,
     publicacionController.feedSiguiendo
-);
-
-router.post(
-    '/toggle-comentarios/:id',
-    isAuth,
-    publicacionController.toggleComentarios
 );
 
 module.exports = router;

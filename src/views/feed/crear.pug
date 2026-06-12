@@ -2,7 +2,7 @@ doctype html
 html
   head
     title Crear publicacion
-
+    link(rel='stylesheet' href='/css/crearpublicacion.css')
   body
     h1 Nueva publicacion
 
@@ -13,25 +13,17 @@ html
         placeholder='Titulo'
       )
 
-      br
-
       textarea(
         name='descripcion'
         placeholder='Descripcion'
       )
 
-      br
-      br
-
       label Etiquetas 
-
       input(
         type='text'
         name='etiquetas'
         placeholder='paisaje,naturaleza,atardecer'
       )
-
-      br
 
       input(
         type='file'
@@ -39,33 +31,23 @@ html
         multiple
       )
 
-      br
-
-      button(type='submit') Publicar
-
-      br
-      br
-
       label Licencia
-
       select(name='licencia')
         option(value='copyright') Con copyright
         option(value='sin-copyright') Sin copyright
 
-      br
-      br
-
-      label Aplicar marca de agua
-
-      input(
-        type='checkbox'
-        name='marcaAgua'
-       )
-
-      br
+      label.aplicar-marca
+        input(
+          type='checkbox'
+          name='marcaAgua'
+        )
+        | Aplicar marca de agua
 
       input(
         type='text'
         name='textoMarcaAgua'
         placeholder='Texto de marca de agua'
       )
+
+      
+      button(type='submit') Publicar

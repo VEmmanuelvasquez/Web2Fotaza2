@@ -28,6 +28,6 @@ exports.cambiarEstado = async(req, res) => {
     usuario.estado = !usuario.estado;
 
     await usuario.save();
-
+    req.session.lastPubId = publicacionId;
     res.redirect('/admin');
 };

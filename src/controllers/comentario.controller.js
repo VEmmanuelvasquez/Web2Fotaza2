@@ -32,6 +32,7 @@ exports.crear = async (req, res) => {
             usuarioEmisorId: req.session.usuario.id
         });
     }
+    req.session.lastPubId = publicacionId;
     res.redirect('/feed');
     
     } catch (error) {

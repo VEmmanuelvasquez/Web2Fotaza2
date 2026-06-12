@@ -34,5 +34,6 @@ exports.leer = async (req, res) => {
         notificacion.leida = true;
         await notificacion.save();
     }
+    req.session.lastPubId = publicacionId;
     res.redirect('/notificaciones');
 };

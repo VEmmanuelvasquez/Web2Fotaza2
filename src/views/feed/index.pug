@@ -1,144 +1,125 @@
 doctype html
 html
-  head
-    title Feed
+head
+title Feed
+link(rel='stylesheet' href='/css/style.css')
 
-  body
-    h1 Feed
+body
 
-    form(action='/feed' method='GET')
-      input(
-        type='text'
-        name='q'
-        placeholder='Buscar publicaciones'
-        value=busqueda
-      ) 
-      button(type='submit') Buscar
+header.navbar
+  h1 Fotaza
+
+  .menu
+
+    a(href='/feed') Inicio
 
     if usuario
-      a(href='/feed/crear') Crear publicacion
-      br
-      a(href='/feed/siguiendo') Publicaciones de usuarios que sigo
-      br
-      a(href='/favoritos') Mis favoritos
-      br
-      a(href='/colecciones') Mis colecciones 
-      br
-      a(href='/notificaciones') Notificaciones 
-      br
-      a(href='/denuncias-comentarios') Ver denuncias de comentarios
-      br
+      a(href='/feed/crear') Crear publicación
+      a(href='/feed/siguiendo') Siguiendo
+      a(href='/usuario/perfil') Mi perfil
       a(href='/auth/logout') Logout
-      br
+
       if usuario.rol === 'admin'
-        a(href='/admin') 🛠️ Panel de administracion
+        a(href='/admin') 🛠️ Admin
 
-    h3 Mis estadisticas 
-    p Siguiendo: #{cantidadSiguiendo}
-    p Seguidores: #{cantidadSeguidores}
+    else
+      a(href='/auth/login') Login
+      a(href='/auth/register') Registro
 
-    h3 Seguir usuarios 
-    each u in usuarios 
-      if usuario && usuario.id !== u.id 
-        p= u.nombre 
-        if siguiendo.includes(u.id)
-          p ✅ Siguiendo 
-          form(action='/seguimientos/dejar-seguir/' + u.id method='POST')
-            button(type='submit') Dejar de seguir
-        else
-          form(action='/seguimientos/seguir/' + u.id method='POST')
-            button(type='submit') Seguir
+.busqueda
+  form(action='/feed' method='GET')
+    input(
+      type='text'
+      name='q'
+      placeholder='Buscar publicaciones'
+      value=busqueda
+    )
+    button(type='submit') Buscar
 
-    each publicacion in publicaciones
-      hr
+.main-feed
+
+  each publicacion in publicaciones
+
+    .card-publicacion
+
       h2= publicacion.titulo
 
-      p
-        b Publicado por:
-        a(href='/usuarios/' + publicacion.Usuario.id) #{publicacion.Usuario.nombre}
+      p.autor
+        b Autor:
+        |  #{publicacion.Usuario.nombre}
 
-      p
-        b Fecha:
-        | #{new Date(publicacion.createdAt).toLocaleString('es-AR')}
+      p.fecha
+        = new Date(publicacion.createdAt).toLocaleString('es-AR')
 
-      p= publicacion.descripcion
-      
-      p
-        b Licencia: 
-        | #{publicacion.licencia}
+      p.descripcion= publicacion.descripcion
 
-      if publicacion.marcaAgua 
-
-        
       if publicacion.listaImagenes.length > 0
-        each imagen in publicacion.listaImagenes
-          img(src='/uploads/' + imagen, width='300')
+
+        .galeria
+
+          each imagen in publicacion.listaImagenes
+
+            img.foto-publicacion(
+             src='/uploads/' + imagen
+             onclick=`abrirImagen('/uploads/${imagen}')`
+            )
+
       else if publicacion.mensajeInvitado
-        p(style="color:red; font-weight:bold")= publicacion.mensajeInvitado
-      else
-        p (Sin imágenes)
 
-      p 
-        b Promedio: 
-        | #{publicacion.promedio} ⭐
+        p.aviso
+          = publicacion.mensajeInvitado
 
-      p 
-        b Votos: 
-        | #{publicacion.cantidadVotos}
+      .estadisticas
+
+        span ⭐ #{publicacion.promedio}
+        span 🗳️ #{publicacion.cantidadVotos}
+        span 📄 #{publicacion.licencia}
 
       if publicacion.Etiqueta && publicacion.Etiqueta.length > 0
-        p 
-          b Etiquetas: 
-          each etiqueta in publicacion.Etiqueta 
-            span.tag #{etiqueta.nombre}
-            |
+
+        .tags
+
+          each etiqueta in publicacion.Etiqueta
+
+            span.tag
+              | ##{etiqueta.nombre}
 
       if usuario && usuario.id === publicacion.usuarioId
-        a(href='/feed/editar/' + publicacion.id)
-          button(type='button') Editar 
-        form(action='/feed/eliminar/' + publicacion.id method='POST')
-          button(type='submit') Eliminar
 
-      if usuario 
-        if !publicacion.comentariosCerrados
-          form(action='/comentarios/crear/' + publicacion.id method='POST')
-            input(type="text" name='texto' placeholder='Escribe un comentario' required)
-            button(type='submit') Comentar
-        else 
-          p 🔒 Comentarios cerrados
+        .acciones
 
-        if usuario.id === publicacion.usuarioId 
+          a(href='/feed/editar/' + publicacion.id)
+            button(type='button') Editar
+
+          form(action='/feed/eliminar/' + publicacion.id method='POST')
+            button(type='submit') Eliminar
+
           form(action='/feed/toggle-comentarios/' + publicacion.id method='POST')
-            if publicacion.comentariosCerrados 
+
+            if publicacion.comentariosCerrados
               button(type='submit') 🔓 Abrir comentarios
-            else 
+            else
               button(type='submit') 🔒 Cerrar comentarios
 
-      if publicacion.comentarios && publicacion.comentarios.length > 0
-        h4 Comentarios 
-        each comentario in publicacion.comentarios 
-          div.comentario
-            p 
-              b #{comentario.Usuario.nombre}:
-              |  #{comentario.texto} 
+      if usuario
 
-            if usuario && usuario.id !== comentario.usuarioId
-              div.denuncia-comentario
-                form(action='/denuncias-comentarios/crear/' + comentario.id method='POST')
-                  label(for='motivo' hidden) Motivo
-                  select(name='motivo' id='motivo')
-                    option(value='Spam') Spam
-                    option(value='Contenido ofensivo') Contenido ofensivo
-                    option(value='Acoso') Acoso
-                    option(value='Copyright') Copyright
-                  textarea(
-                    name='descripcion'
-                    placeholder='Justificación de la denuncia'
-                    required
-                  )
-                  button(type='submit') 🚨 Denunciar comentario
+        hr
 
-      if usuario 
+        if !publicacion.comentariosCerrados
+
+          form(action='/comentarios/crear/' + publicacion.id method='POST')
+            input(
+              type='text'
+              name='texto'
+              placeholder='Escribe un comentario'
+              required
+            )
+            button(type='submit') Comentar
+
+        else
+
+          p 🔒 Comentarios cerrados
+
         form(action='/valoraciones/crear/' + publicacion.id method='POST')
           select(name='puntaje')
             option(value='1') 1
@@ -148,25 +129,93 @@ html
             option(value='5') 5
           button(type='submit') Valorar
 
-      if usuario && usuario.id !== publicacion.usuarioId 
-        form(action='/intereses/crear/' + publicacion.id method='POST')
-          button(type='submit') Me interesa
+      if publicacion.comentarios && publicacion.comentarios.length > 0
 
-        form(action='/denuncias/crear/' + publicacion.id method='POST')
-          select(name='motivo')
-            option(value='Spam') Spam 
-            option(value='Contenido ofensivo') Contenido ofensivo 
-            option(value='Copyright') Copyright 
-          input(type='text' name='descripcion' placeholder='Justificación de la denuncia' required)
-          button(type='submit') 🚨 Denuncia
+        h4 Comentarios
+
+        each comentario in publicacion.comentarios
+
+          .comentario
+
+            p
+              b #{comentario.Usuario.nombre}:
+              |  #{comentario.texto}
+
+            if usuario && usuario.id !== comentario.usuarioId
+
+              form(
+                action='/denuncias-comentarios/crear/' + comentario.id
+                method='POST'
+              )
+
+                select(name='motivo')
+                  option(value='Spam') Spam
+                  option(value='Contenido ofensivo') Contenido ofensivo
+                  option(value='Acoso') Acoso
+                  option(value='Copyright') Copyright
+
+                textarea(
+                  name='descripcion'
+                  placeholder='Justificación de la denuncia'
+                  required
+                )
+
+                button(type='submit')
+                  | 🚨 Denunciar comentario
 
       if usuario && usuario.id !== publicacion.usuarioId
-        form(action='/favoritos/guardar/' + publicacion.id method='POST')
-          button(type='submit') ⭐ Guardar en favoritos
 
-      if usuario && colecciones 
-        form(action='/coleccion-publicacion/agregar/' + publicacion.id method='POST')
-          select(name='coleccionId')
-            each coleccion in colecciones 
-              option(value=coleccion.id)= coleccion.nombre 
-          button(type='submit') Agregar a coleccion
+        .acciones
+
+          form(action='/intereses/crear/' + publicacion.id method='POST')
+            button(type='submit') Me interesa
+
+          form(action='/favoritos/guardar/' + publicacion.id method='POST')
+            button(type='submit') ⭐ Favorito
+
+          form(action='/denuncias/crear/' + publicacion.id method='POST')
+
+            select(name='motivo')
+              option(value='Spam') Spam
+              option(value='Contenido ofensivo') Contenido ofensivo
+              option(value='Copyright') Copyright
+
+            input(
+              type='text'
+              name='descripcion'
+              placeholder='Justificación'
+              required
+            )
+
+            button(type='submit')
+              | 🚨 Denunciar
+
+          if colecciones
+
+            form(
+              action='/coleccion-publicacion/agregar/' + publicacion.id
+              method='POST'
+            )
+
+              select(name='coleccionId')
+
+                each coleccion in colecciones
+
+                  option(value=coleccion.id)
+                    = coleccion.nombre
+
+              button(type='submit')
+                | Agregar a colección
+#modalImagen.modal-imagen(onclick='cerrarImagen()')
+  img#imagenGrande
+
+          
+script.
+  function abrirImagen(src){
+    document.getElementById('imagenGrande').src = src;
+    document.getElementById('modalImagen').style.display = 'flex';
+  }
+
+  function cerrarImagen(){
+  document.getElementById('modalImagen').style.display = 'none';
+  }

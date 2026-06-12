@@ -17,7 +17,7 @@ exports.agregar = async (req, res) => {
         coleccionId: req.body.coleccionId,
         publicacionId: req.params.id
     });
-
+    req.session.lastPubId = publicacionId;
     res.redirect('/colecciones');
 } catch ( error) {
     console.error(error);
