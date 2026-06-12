@@ -29,5 +29,8 @@ router.get(
     isAuth,
     publicacionController.feedSiguiendo
 );
-
+router.post('/eliminar/:id',
+    isAuth,
+    publicacionController.eliminar
+);
 module.exports = router;
