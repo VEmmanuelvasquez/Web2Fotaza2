@@ -44,7 +44,7 @@ exports.seguir = async (req, res) => {
 
         console.log('Seguimiento creado')
 
-        req.session.lastPubId = publicacionId;
+        
         res.redirect('/feed');
     } catch (error) {
         console.log('ERROR SEGUIR')
@@ -64,7 +64,7 @@ exports.dejarSeguir = async (req, res) => {
                 seguidoId: req.params.id
             }
         });
-    req.session.lastPubId = publicacionId;  
+    
     res.redirect('/feed');
 
 } catch(error) {

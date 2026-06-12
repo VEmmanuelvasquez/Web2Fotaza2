@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const usuarioController = require('./usuario.controller');
 const Comentario = require('../models/Comentario');
+const Coleccion = require('../models/Coleccion');
 
 exports.feed = async (req, res) => {
   const busqueda = req.query.q || '';
@@ -60,7 +61,7 @@ exports.feed = async (req, res) => {
     .filter(p => !(p.cantidadVotos >= 3 && p.promedio >= 3.5))
     .sort(() => Math.random() - 0.5);
 
-  // ✅ Mantener visible la última publicación donde hubo acción
+  
   if (req.session.lastPubId) {
     const existe = normales.find(p => p.id == req.session.lastPubId);
     if (!existe) {
@@ -76,11 +77,17 @@ exports.feed = async (req, res) => {
     }
   }
 
-  const publicacionesHome = [...destacadas, ...normales.slice(0, 5)];
-
+  const publicacionesHome = [...destacadas, ...normales];
+  let colecciones = [];
+  if (req.session.usuario) {
+    colecciones = await Coleccion.findAll({
+      where: { usuarioId: req.session.usuario.id }
+    });
+  }
   res.render('feed/index', {
     publicaciones: publicacionesHome,
-    usuario: req.session.usuario || null
+    usuario: req.session.usuario || null,
+        colecciones
   });
 };
 
@@ -96,38 +103,7 @@ exports.crear = async (req, res) => {
     console.log('FILES:', req.files);
     const imagenes = req.files ? req.files.map(archivo => archivo.filename) : [];
 
-    if (req.body.licencia === 'copyright' && req.body.marcaAgua && req.body.textoMarcaAgua) {
-      for (const archivo of req.files) {
-        const ruta = path.join(__dirname, '../public/uploads', archivo.filename);
-        const rutaTemp = path.join(__dirname, '../public/uploads', 'temp-' + archivo.filename);
-        const stats = await sharp(ruta).stats();
-
-        const brillo = (stats.channels[0].mean + stats.channels[1].mean + stats.channels[2].mean) / 3;
-        const colorTexto = brillo > 128 ? 'black' : 'white';
-
-        const svg = `
-<svg width="1200" height="300">
-  <text
-    x="50"
-    y="150"
-    font-size="80"
-    fill="${colorTexto}"
-    stroke="${colorTexto === 'white' ? 'black' : 'white'}"
-    stroke-width="2"
-    opacity="0.6"
-    font-family="Arial">
-    ${req.body.textoMarcaAgua}
-  </text>
-</svg>
-`;
-
-        await sharp(ruta)
-          .composite([{ input: Buffer.from(svg), gravity: 'southeast' }])
-          .toFile(rutaTemp);
-
-        fs.renameSync(rutaTemp, ruta);
-      }
-    }
+   
 
     const publicacion = await Publicacion.create({
       titulo: req.body.titulo,
@@ -149,30 +125,38 @@ exports.crear = async (req, res) => {
         await publicacion.addEtiqueta(etiqueta);
       }
     }
-    req.session.lastPubId = publicacionId;
+
+   
+    req.session.lastPubId = publicacion.id;
+
     res.redirect('/feed');
   } catch (error) {
     console.log(error);
     res.send('Error al publicar');
   }
 };
+
 exports.toggleComentarios = async (req, res) => {
-    try {
-        const publicacion = await Publicacion.findByPk(req.params.id);
-        if (!publicacion) {
-            return res.send('Publicacion no encontrada');
-        }
-        if (publicacion.usuarioId !== req.session.usuario.id) {
-            return res.send('No autorizado');
-        }
-        publicacion.comentariosCerrados = !publicacion.comentariosCerrados;
-        await publicacion.save();
-        req.session.lastPubId = publicacionId;
-        res.redirect('/feed');
-    } catch (error) {
-        console.log(error);
-        res.send('Error al cambiar estado de comentarios');
+  try {
+    const publicacion = await Publicacion.findByPk(req.params.id);
+    if (!publicacion) {
+      return res.send('Publicacion no encontrada');
     }
+    if (publicacion.usuarioId !== req.session.usuario.id) {
+      return res.send('No autorizado');
+    }
+
+    publicacion.comentariosCerrados = !publicacion.comentariosCerrados;
+    await publicacion.save();
+
+    
+    req.session.lastPubId = publicacion.id;
+
+    res.redirect('/feed');
+  } catch (error) {
+    console.log(error);
+    res.send('Error al cambiar estado de comentarios');
+  }
 };
 exports.feedSiguiendo = async (req, res) => {
   try {
@@ -219,12 +203,3 @@ exports.feedSiguiendo = async (req, res) => {
     res.send('Error al cargar feed de siguiendo');
   }
 };
-
-
-
-
-
-
-
-
-

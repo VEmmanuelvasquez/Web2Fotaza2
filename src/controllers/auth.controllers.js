@@ -27,7 +27,7 @@ exports.register = async (req,res) => {
             email,
             password: hash
         });
-        req.session.lastPubId = publicacionId;
+        
         res.redirect('/auth/login');
 
     } catch (error){

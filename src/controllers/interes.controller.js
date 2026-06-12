@@ -40,7 +40,7 @@ exports.crear = async (req, res) => {
             usuarioDestinoId: publicacion.usuarioId,
             usuarioEmisorId: req.session.usuario.id
         });
-        req.session.lastPubId = publicacionId;
+        
         res.redirect('/feed');
 
     } catch (error) {

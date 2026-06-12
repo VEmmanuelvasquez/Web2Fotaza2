@@ -58,7 +58,7 @@ exports.crear = async(req,res)=>{
         usuarioId:req.session.usuario.id,
         comentarioId:req.params.id
     });
-    req.session.lastPubId = publicacionId;
+   
     res.redirect('/feed');
 };
 

@@ -31,7 +31,7 @@ if ( publicacion.usuarioId === req.session.usuario.id) {
         usuarioId: req.session.usuario.id,
         publicacionId: req.params.id
     });
-    req.session.lastPubId = publicacionId;
+    
     res.redirect('/feed');
 };
 
