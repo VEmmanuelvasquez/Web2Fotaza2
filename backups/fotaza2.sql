@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict EWJazO5yynx5NLR86djQgIJI0efzjgcLYHB6AfRL6hmjiUD8jD6fPnTdCwdhFnv
+
 
 -- Dumped from database version 18.4
 -- Dumped by pg_dump version 18.4
@@ -32,7 +32,7 @@ CREATE TYPE public.enum_publicaciones_licencia AS ENUM (
 );
 
 
-ALTER TYPE public.enum_publicaciones_licencia OWNER TO postgres;
+ALTER TYPE public.enum_publicaciones_licencia OWNER TO neondb_owner;
 
 SET default_tablespace = '';
 
@@ -1494,5 +1494,5 @@ ALTER TABLE ONLY public.valoraciones
 -- PostgreSQL database dump complete
 --
 
-\unrestrict EWJazO5yynx5NLR86djQgIJI0efzjgcLYHB6AfRL6hmjiUD8jD6fPnTdCwdhFnv
+
 

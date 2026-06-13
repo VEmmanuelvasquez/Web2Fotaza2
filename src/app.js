@@ -29,12 +29,16 @@ app.use(express.json());
 app.use(session({
     store: new pgSession({
         conObject: {
-            user: process.env.DB_USER,
-            host: process.env.DB_HOST,
-            database: process.env.DB_NAME,
-            password: process.env.DB_PASSWORD,
-            port: process.env.DB_PORT
-        },
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
+    ssl: {
+        require: true,
+        rejectUnauthorized: false
+    }
+},
         createTableIfMissing: true
     }),
     secret: process.env.SESSION_SECRET,
